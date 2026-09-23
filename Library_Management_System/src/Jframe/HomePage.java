@@ -35,11 +35,9 @@ public class HomePage extends javax.swing.JFrame {
         setDataToCards();
     }
 
-    public void setStudentDetailsToTable() {
-
+   public void setStudentDetailsToTable() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_ms", "root", "admin");
+            Connection con = DBConnection.getConnection();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from student_details");
 
@@ -57,29 +55,26 @@ public class HomePage extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
-        public void setBookDetailsToTable(){
-        
+        public void setBookDetailsToTable() {
         try {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_ms", "root", "admin");
-        Statement st = con.createStatement();
-        ResultSet rs = st.executeQuery("select * from book_details");
-            
-        while(rs.next()) {
-            String bookId = rs.getString("book_id");
-            String bookName = rs.getString("book_name");
-            String author = rs.getString("author");
-            int quantity = rs.getInt("quantity");
-                
-            Object[] obj = {bookId, bookName, author, quantity};
-            model = (DefaultTableModel) tbl_bookDetails.getModel();
-            model.addRow(obj);
+            Connection con = DBConnection.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from book_details");
+
+            while (rs.next()) {
+                String bookId = rs.getString("book_id");
+                String bookName = rs.getString("book_name");
+                String author = rs.getString("author");
+                int quantity = rs.getInt("quantity");
+
+                Object[] obj = {bookId, bookName, author, quantity};
+                model = (DefaultTableModel) tbl_bookDetails.getModel();
+                model.addRow(obj);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
     }
-}
         
 public void setDataToCards() {
     long current = System.currentTimeMillis();
